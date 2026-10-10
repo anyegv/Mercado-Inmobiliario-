@@ -1,4 +1,3 @@
-# Mercado-Inmobiliario-
 # Análisis del Mercado Inmobiliario en Cuba
 
 > Estado: 🚧 En desarrollo — Fase de análisis y recopilación de datos
