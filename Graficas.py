@@ -2,6 +2,7 @@ import matplotlib
 from  matplotlib import pyplot as plt
 import Funciones
 from Funciones import alq
+from Funciones import cxc
 
 def scatter_serv():
         x_ll=Funciones.servicios_alquileres("servicios")    
@@ -61,7 +62,10 @@ def scatter_serv():
                 )
         return plt.show()
 
-def barras(x,y):
+def barras():
+        y=Funciones.precios_casas()
+        x=["1 cuarto", "2 cuartos", "3 cuartos"]
+
         plt.figure(
         figsize=(14,6.2),
         facecolor="#d4d4d4")
@@ -75,44 +79,52 @@ def barras(x,y):
                 )
         plt.xticks(
                 fontname="Algerian",
-                fontsize=20,
+                fontsize=15,
                 color="black",
                 fontweight="bold")
-        plt.yticks([0,5,10,15,20],
+        plt.yticks(
                 fontname="Algerian",
                 fontsize=15)
-        plt.xlim(-0.5,1.5)
-        plt.ylim(0,20)
-        plt.title("Cantidad de varones y hembras en el curso",
+        plt.xlim(-0.5,2.5)
+        #plt.ylim()
+        plt.title("Precio Promedio de Casas en Venta \nen dependencia de la cantidad de cuartos",
                 fontsize=20,
                 fontname="Algerian",
                 loc="center",
                 pad=10,
                 color="#000000")
-        plt.text(0,18,"18", ha="center", va="bottom",
-                fontname="Calibri",
+        plt.text(0,9523,"$ 9523", ha="center", va="bottom",
+                fontname="Bell MT",
                 fontsize=13,
                 fontweight="bold")
-        plt.text(1,10,"10", ha="center", va="bottom",
-                fontname="Calibri",
+        plt.text(1,26066,"$ 26066", ha="center", va="bottom",
+                fontname="Bell MT",
                 fontsize=13,
                 fontweight="bold")
-        plt.hlines(18,-0.5,-0.25,
+        plt.text(2,45733,"$ 45733", ha="center", va="bottom",
+                fontname="Bell MT",
+                fontsize=13,
+                fontweight="bold")
+        plt.hlines(9523,-0.5,0,
                 linestyles="--",
                 colors="#2531D8",
                 linewidth=1)
-
-        plt.hlines(10,-0.5,1.25,
+        plt.hlines(26066,-0.5,1,
                 linestyles="--",
                 colors="#2531D8",
                 linewidth=1)
-        plt.xlabel("Genero",
+        plt.hlines(45733,-0.5,2,
+                linestyles="--",
+                colors="#2531D8",
+                linewidth=1)
+        plt.xlabel("Cantidad de Cuartos",
                 fontname="Algerian",
-                fontsize=25)
-        plt.ylabel("Cantidad",
+                fontsize=16,
+                labelpad=10)
+        plt.ylabel("Precio Promedio en USD",
                 fontname="Algerian",
-                fontsize=25,
-                labelpad=20)
+                fontsize=16,
+                labelpad=10)
         plt.grid(False)
         return plt.show()
-barras(["Hembras","Varones"],[18,10])
+barras()

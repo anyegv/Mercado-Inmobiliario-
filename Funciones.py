@@ -6,7 +6,7 @@ def open_json(json_name):
     return(datos)
 
 alq=open_json("Alquileres") #GUARDAR LOS DATOS DEL JSON DE ALQUILERES EN UNA VARIABLE PARA TRABAJO POSTERIOR
-#GUARDAR LOS DATOS DEL JSON DE Casas por Cuarto EN UNA VARIABLE PARA TRABAJO POSTERIOR
+cxc=open_json("Casas x Cuarto") #GUARDAR LOS DATOS DEL JSON DE Casas por Cuarto EN UNA VARIABLE PARA TRABAJO POSTERIOR
 
 #EXTRAER UNA LISTA CON LOS PRECIOS DE LOS ALQUILERES
 def precios_alquileres():
@@ -37,3 +37,24 @@ def servicios_alquileres(x:str):
     elif x=="servicios":
         return serv_true
     else: print("ERROR.....Introduzca: 'casas' o 'servicios'")
+
+#EXTRAER UNA LISTA CON EL PROMEDIO DE PRECIO DELAS CASAS DE 1, 2 Y 3 CUARTOS
+def precios_casas():
+    precios_1=0
+    precios_2=0
+    precios_3=0
+    precios_lista=[]
+    for i in range(len(cxc)):
+        for j in range(len(cxc[i][f"casas_{i+1}"])):
+            if i+1==1:
+                precios_1+=(cxc[i][f"casas_{i+1}"][j]["precio"])
+            elif i+1==2:
+                precios_2+=(cxc[i][f"casas_{i+1}"][j]["precio"])
+            else:
+                precios_3+=(cxc[i][f"casas_{i+1}"][j]["precio"])
+    precios_lista.append(precios_1//30)
+    precios_lista.append(precios_2//30)
+    precios_lista.append(precios_3//30)
+    return precios_lista
+
+print(precios_casas())
