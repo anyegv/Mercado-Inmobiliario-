@@ -7,6 +7,7 @@ def open_json(json_name):
 
 alq=open_json("Alquileres") #GUARDAR LOS DATOS DEL JSON DE ALQUILERES EN UNA VARIABLE PARA TRABAJO POSTERIOR
 cxc=open_json("Casas x Cuarto") #GUARDAR LOS DATOS DEL JSON DE Casas por Cuarto EN UNA VARIABLE PARA TRABAJO POSTERIOR
+zona=open_json("Alquileres x Zona")
 
 #EXTRAER UNA LISTA CON LOS PRECIOS DE LOS ALQUILERES
 def precios_alquileres():
@@ -57,4 +58,11 @@ def precios_casas():
     precios_lista.append(precios_3//30)
     return precios_lista
 
-print(precios_casas())
+#EXTRAER UNA LISTA CON EL PRECIO DE TODOS LOS ALQUILERES
+def precios_zonas():
+    zona_precio=[]
+    for i in range(len(zona)):
+        llaves=list(zona[i].keys())
+        for j in range(len(zona[i][llaves[0]])):
+            zona_precio.append(zona[i][llaves[0]][j]["precio"])
+    return (zona_precio)

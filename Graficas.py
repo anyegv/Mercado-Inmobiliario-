@@ -24,7 +24,8 @@ def scatter_serv():
                         x_l.append(x_ll[i][j])    
         plt.figure(
                 figsize=(14,7),
-                facecolor="#d4d4d4")    
+                facecolor="#d4d4d4",
+                dpi=1080)    
         plt.scatter(x_l,y_l,
                 s=50,
                 facecolor="#1757C6",
@@ -52,7 +53,7 @@ def scatter_serv():
         fontsize=25,
         labelpad=10
         )
-        plt.title('Servicios Básicos de Casas en Venta',
+        plt.title('Servicios Básicos de Casas en Alquileres',
         fontname="Bell MT",
         fontsize=30,
         pad=10
@@ -65,31 +66,31 @@ def scatter_serv():
 def barras():
         y=Funciones.precios_casas()
         x=["1 cuarto", "2 cuartos", "3 cuartos"]
-
         plt.figure(
-        figsize=(14,6.2),
-        facecolor="#d4d4d4")
-
+                figsize=(14,6.2),
+                facecolor="#d4d4d4",
+                dpi=1080
+                )
         plt.bar(x,y,
                 width=0.5,
                 align="center",
                 bottom=0,
                 color="#2531D8",
-                edgecolor="#9E0303",
+                #edgecolor="#D00909"
                 )
         plt.xticks(
-                fontname="Algerian",
+                fontname="Bell MT",
                 fontsize=15,
                 color="black",
                 fontweight="bold")
         plt.yticks(
-                fontname="Algerian",
+                fontname="Bell MT",
                 fontsize=15)
         plt.xlim(-0.5,2.5)
         #plt.ylim()
         plt.title("Precio Promedio de Casas en Venta \nen dependencia de la cantidad de cuartos",
                 fontsize=20,
-                fontname="Algerian",
+                fontname="Bell MT",
                 loc="center",
                 pad=10,
                 color="#000000")
@@ -118,13 +119,54 @@ def barras():
                 colors="#2531D8",
                 linewidth=1)
         plt.xlabel("Cantidad de Cuartos",
-                fontname="Algerian",
+                fontname="Bell MT",
                 fontsize=16,
                 labelpad=10)
         plt.ylabel("Precio Promedio en USD",
-                fontname="Algerian",
+                fontname="Bell MT",
                 fontsize=16,
                 labelpad=10)
         plt.grid(False)
         return plt.show()
-barras()
+
+def comp_países():
+        data=[
+                ("Brasil", 7710, 91698),
+                ("El Salvador", 5249, 90000),
+                ("México", 4792, 96982),
+                ("Cuba", 204, 16500)]
+        labels=[]
+        years=[]
+        for país, salario, vivienda in data:
+                labels.append(f"{país}\nSalario: {salario}/año | Casa: {vivienda}")
+                years.append(vivienda/salario)
+        plt.figure(figsize=(14,6),
+                dpi=1080)
+        plt.plot(labels,years,
+                marker=".",
+                color="blue"
+                )
+        plt.xticks(ticks=range(4),
+                fontname="Bell MT",
+                fontsize=15
+                )
+        plt.yticks(fontname="Bell MT",
+                fontsize=15
+                )
+        #plt.xlim(-0.5,3.5)
+        plt.ylim(0,90)
+        plt.xlabel("Países con sus Salarios Promedios y Precio Promedio de Casas en Venta",
+                fontname="Bell MT",
+                fontsize=18,
+                labelpad=8)
+        plt.ylabel("Años de salario íntegro necesarios\n para comprar la vivienda",
+                fontname="Bell MT",
+                fontsize=18,
+                labelpad=10)
+        plt.grid(linestyle="--", alpha=0.4)
+        plt.title("Años para comprar una vivienda destinando el 100% del salario anual (2025)",
+                fontname="Bell MT",
+                fontsize=20,
+                color="black")
+        plt.vlines(x=labels, ymin=-10, ymax=years, linestyles="--", linewidth=1, colors="blue")
+        return plt.show()
