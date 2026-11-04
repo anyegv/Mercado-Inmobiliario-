@@ -1,5 +1,8 @@
 import matplotlib
 from  matplotlib import pyplot as plt
+import statistics
+import numpy as np
+import math
 import Funciones
 from Funciones import alq
 from Funciones import cxc
@@ -23,7 +26,7 @@ def scatter_serv():
                 for j in range(len(x_ll[i])):
                         x_l.append(x_ll[i][j])    
         plt.figure(
-                figsize=(14,7),
+                figsize=(12,6),
                 facecolor="#d4d4d4",
                 dpi=1080)    
         plt.scatter(x_l,y_l,
@@ -135,25 +138,25 @@ def comp_países():
                 ("El Salvador", 5249, 90000),
                 ("México", 4792, 96982),
                 ("Cuba", 204, 16500)]
-        labels=[]
-        years=[]
+        labels=['0']
+        years=[0]
         for país, salario, vivienda in data:
-                labels.append(f"{país}\nSalario: {salario}/año | Casa: {vivienda}")
+                labels.append(f"{país}\nSalario: \\${salario}/año|Casa: \\${vivienda}")
                 years.append(vivienda/salario)
         plt.figure(figsize=(14,6),
-                dpi=1080)
+                facecolor="#eadddd",
+                edgecolor="#d45050")
         plt.plot(labels,years,
                 marker=".",
                 color="blue"
                 )
-        plt.xticks(ticks=range(4),
-                fontname="Bell MT",
-                fontsize=15
+        plt.xticks(fontname="Bell MT",
+                fontsize=12
                 )
         plt.yticks(fontname="Bell MT",
                 fontsize=15
                 )
-        #plt.xlim(-0.5,3.5)
+        plt.xlim(0,4.5)
         plt.ylim(0,90)
         plt.xlabel("Países con sus Salarios Promedios y Precio Promedio de Casas en Venta",
                 fontname="Bell MT",
@@ -169,4 +172,115 @@ def comp_países():
                 fontsize=20,
                 color="black")
         plt.vlines(x=labels, ymin=-10, ymax=years, linestyles="--", linewidth=1, colors="blue")
+        return plt.show()
+
+def type_casa():
+        y=[15000,23000,30000,36000,38500,60000]
+        x=["Apartamento","Casas","Colonial","Biplanta","Casa de campo","Casas \nIndependientes"]
+        plt.figure(figsize=(12,6),
+                facecolor="#dccfcf"
+                )
+        plt.barh(x,y,
+                height=0.7,
+                color="#1D6ACE",
+                edgecolor="black")
+        #plt.subplots_adjust(left=0.15, right=0.9, top=0.95, bottom=0.03)
+        plt.yticks(ticks=range(6),
+                fontsize=14,
+                fontname="Bell MT"
+                )
+        plt.xticks(fontsize=14,
+                fontname="Bell MT")
+        plt.ylabel("Tipos de vivienda",
+                fontname="Bell MT",
+                fontsize=20,
+                loc="center",
+                labelpad=1)
+        plt.xlabel("Mediana del Precio",
+                fontname="Bell MT",
+                fontsize=20,
+                loc="center",
+                labelpad=10)
+        for i in range(len(y)):
+                plt.text((y[i]//2.25),i-0.1, f"${y[i]}",
+                        color="#ffffff",
+                        fontname="Bell MT",
+                        fontsize=20)
+        #plt.grid(linestyle="--", alpha=0.4)
+        plt.ylim(-1,6)
+        plt.vlines(y, ymin=-1, ymax=range(len(y)), linestyles="--", linewidth=1, colors="blue" )
+        plt.title("Precio Mediano por Tipo de Vivienda",
+                fontname="Bell MT",
+                fontsize=24)
+        return plt.show()
+
+def casas_cuartos():
+        # lista con los 90 valores
+        precios = [270, 250, 550, 500, 450, 600, 300, 450, 600, 300, 500, 450, 150, 350, 250, 350, 700, 400, 500, 350, 280, 500, 550, 600, 200, 400, 400, 200, 200, 250, 300, 300, 250, 250, 150, 300, 350, 230, 300, 300, 250, 300, 400, 350, 250, 100, 150, 450, 450, 300, 250, 250, 350, 250, 200, 300, 400, 250, 200, 150, 350, 200, 230, 200, 400, 150, 500, 250, 350, 200, 300, 750, 250, 230, 300, 650, 300, 350, 250, 200, 350, 100, 200, 300, 250, 200, 300, 350, 200, 200]  
+
+        zona_a = precios[0:30]
+        zona_b = precios[30:60]
+        zona_c = precios[60:90]
+
+        datos = [zona_a, zona_b, zona_c]
+        etiquetas = ["Plaza de la Revolución", "Centro Habana", "Playa"]
+        colores = ["#66c2a5", "#fc8d62", "#8da0cb"]
+
+        # ---- KDE gaussiano en Python puro ----
+        def kde(valores, x, h):
+                """Densidad de kernel gaussiano en el punto x con ancho de banda h."""
+                n = len(valores)
+                s = 0.0
+                for xi in valores:
+                        u = (x - xi) / h
+                        s += math.exp(-0.5 * u * u) / math.sqrt(2 * math.pi)
+                return s / (n * h)
+
+        def silverman_h(valores):
+                """Ancho de banda óptimo según la regla de Silverman."""
+                n = len(valores)
+                sigma = statistics.stdev(valores)
+                return 1.06 * sigma * n ** (-1 / 5)
+
+        # ---- Rango común del eje X para las tres zonas ----
+        todos = zona_a + zona_b + zona_c
+        x_min = 0
+        x_max = 800
+        pasos = 300
+        xs = [x_min + i * (x_max - x_min) / (pasos - 1) for i in range(pasos)]
+
+        fig, ax = plt.subplots(figsize=(9, 6))
+
+        # ---- Dibujar una curva de densidad por zona ----
+        for grupo, etiqueta, color in zip(datos, etiquetas, colores):
+                h = silverman_h(grupo)
+                ys = [kde(grupo, x, h) for x in xs]
+                xs_array=np.array(xs)
+                ys_array=np.array(ys)
+                precio_min=min(precios)
+                ys_array[xs_array < precio_min]=0
+                ax.plot(xs_array, ys_array, color=color, linewidth=2, label=etiqueta)
+                ax.fill_between(xs, ys, color=color, alpha=0.25)
+
+        # ---- Ejes y estilo ----
+        plt.xticks(fontname="Bell MT",
+                fontsize=16)
+        plt.yticks(fontname="Bell MT",
+                fontsize=16)
+        ax.set_xlabel("Precio de alquiler",
+                fontname="Bell MT",
+                fontsize=18)
+        ax.set_ylabel("Densidad",
+                fontname="Bell MT",
+                fontsize=18)
+        ax.set_title("Densidad de precios de alquiler por zona (n = 30 por zona)",
+                fontname="Bell MT",
+                fontsize=20)
+        ax.grid(linestyle="--", alpha=0.4)
+        ax.legend(loc="best")
+
+        plt.xlim(100,x_max)
+        plt.ylim(bottom=0)
+
+        plt.tight_layout()
         return plt.show()
